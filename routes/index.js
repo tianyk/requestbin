@@ -7,7 +7,7 @@ router.use('/api', require('./api'));
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-	if (!req.signedCookies.uid) res.cookie('uid', uuid.v4(), { maxAge: ms('1d'), signed: true });
+	if (!req.signedCookies.uid) res.cookie('uid', uuid.v4(), { maxAge: ms('1 years'), signed: true });
 
 	res.render('index', { title: 'RequestBin' });
 });

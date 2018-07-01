@@ -19,15 +19,15 @@ async function exist(binid) {
 }
 
 async function check(binid) {
-    let existd = await exist(binid) ;
-    if (!existd) throw new Error('Bin not exist.');
+    let existed = await exist(binid) ;
+    if (!existed) throw new Error(`Bin ${binid} not exist.`);
 }
 
 async function generate(len = 8, maxRetry = 20) {
     if (maxRetry <= 0) throw new Error('Max retries exceeded.');
     let binid = randomstring.generate(len);
-    let existd = await exist(binid);
-    if (existd) {
+    let existed = await exist(binid);
+    if (existed) {
         return generate(len, maxRetry--);
     } else {
         return binid;
@@ -62,6 +62,8 @@ async function getBins(binid) {
         let bins = await DB.get(`${binid}${BINS_SUFFIX}`);
         return JSON.parse(bins);
     } catch (err) {
+        // ignore NotFoundError
+        // @see https://github.com/level/levelup#dbgetkey-options-callback
         if (err.type !== 'NotFoundError') throw err;
     }
 }
@@ -92,9 +94,46 @@ async function bin({ binid, method = 'GET', pathname, version = '1.1', headers, 
     return bins;
 }
 
+async function del(binid) {
+    if (!binid) throw new Error('[del] binid is required.');
+
+    await Promise.all([
+        DB.del(`${binid}${META_SUFFIX}`),
+        DB.del(`${binid}${BINS_SUFFIX}`)
+    ]);
+}
+
+function gc({ expire, gt, limit = 100, cb = _.noop }) {
+    let count = 0;
+    DB.createReadStream({ gt, limit })
+        .on('data', function (data) {
+            count++;
+            gt = data.key;
+
+            if (/[a-zA-Z0-9]{6,10}:meta/.test(data.key)) {
+                let meta = JSON.parse(data.value);
+                if (meta.createdAt < expire) del(meta.binid);
+            }
+        })
+        .on('error', cb)
+        .on('end', () => {
+            if (count === limit) {
+                // 可能有更多
+                gc({ expire, gt, limit, cb });
+            } else {
+                // 已经遍历结束
+                cb();
+            }
+        });
+    // .on('close', () => {
+    //     console.log('Stream closed')
+    // });
+}
+
 exports.exist = exist;
 exports.generate = generate;
 exports.meta = meta;
 exports.getMeta = getMeta;
 exports.bin = bin;
 exports.getBins = getBins;
+exports.gc = gc;
