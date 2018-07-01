@@ -1,0 +1,7 @@
+<% if (typeof bins !== 'undefined') { %>
+    <% for (let bin of bins) { %>
+        <%= bin.method %> <%= bin.pathname %> <%= bin.createdAt %>  <br>
+    <% } %>
+<% } else { %> 
+    curl -X POST -d "fizz=buzz" http://localhost:3000/<%= binid %>
+<% } %>

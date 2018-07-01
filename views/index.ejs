@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+
+  <form method="POST" action="/api/v1/bins">
+    <label for="private">
+      <input type="checkbox" name="private" value="true" id="private"> Private (only viewable from this browser)
+      <br>
+      <button type="submit">Create a RequestBin</button>
+    </label>
+  </form>
+</body>
+
+</html>

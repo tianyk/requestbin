@@ -1,0 +1,23 @@
+{
+  "name": "requestbin",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "is-type-of": "^1.2.0",
+    "leveldown": "^4.0.1",
+    "levelup": "^3.1.0",
+    "lodash": "^4.17.10",
+    "morgan": "~1.9.0",
+    "ms": "^2.1.1",
+    "randomstring": "^1.1.5",
+    "uuid": "^3.3.2"
+  }
+}
