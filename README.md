@@ -3,7 +3,12 @@ Inspect HTTP requests.
 
 ### 启动 
 ```
-$ node bin/www
+$ npm start
+```
+
+> 启动开发环境
+```
+$ npm run dev
 ```
 
 ### TODO
