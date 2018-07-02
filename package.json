@@ -1,7 +1,16 @@
 {
   "name": "requestbin",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "author": "tianyk",
   "private": true,
+  "description": "Inspect HTTP requests.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tianyk/requestbin.git"
+  },
+  "keywords": [
+    "RequestBin"
+  ],
   "scripts": {
     "start": "node ./bin/www"
   },
@@ -19,5 +28,9 @@
     "ms": "^2.1.1",
     "randomstring": "^1.1.5",
     "uuid": "^3.3.2"
-  }
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "license": "BSD"
 }
