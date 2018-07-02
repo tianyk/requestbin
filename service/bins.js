@@ -32,7 +32,6 @@ async function generate(len = 8, maxRetry = 20) {
     let binid = randomstring.generate(len);
     let existed = await exist(binid);
     if (existed) {
-        console.log('existed: %s', binid);
         return generate(len, maxRetry--);
     } else {
         return binid;
