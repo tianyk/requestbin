@@ -6,7 +6,7 @@ Inspect HTTP requests.
 $ npm start
 ```
 
-> 启动开发环境
+> 启动开发环境 （需要[nodemon](https://www.npmjs.com/package/nodemon) `npm install -g nodemon`）
 ```
 $ npm run dev
 ```
