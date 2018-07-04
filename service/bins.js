@@ -8,18 +8,22 @@ const BINS_SUFFIX = ':bins';
 // n4N9COuJ:meta {binid, createdAt, private, uid}
 // n4N9COuJ:bins [{binid, method, pathname, header, body, ip..}]
 
+function isNotFoundError(err) {
+    return err.type === 'NotFoundError';
+}
+
 async function exist(binid) {
     try {
         await DB.get(`${binid}${META_SUFFIX}`);
         return true;
     } catch (err) {
-        if (err.type !== 'NotFoundError') throw err;
+        if (!isNotFoundError(err)) throw err;
         return false;
     }
 }
 
 async function check(binid) {
-    let existed = await exist(binid) ;
+    let existed = await exist(binid);
     if (!existed) throw new Error(`Bin ${binid} not exist.`);
 }
 
@@ -50,8 +54,7 @@ async function getMeta(binid) {
         let meta = await DB.get(`${binid}${META_SUFFIX}`);
         return JSON.parse(meta);
     } catch (err) {
-        if (err.notFound) return;
-        throw err;
+        if (!isNotFoundError(err)) throw err;
     }
 }
 
@@ -64,7 +67,7 @@ async function getBins(binid) {
     } catch (err) {
         // ignore NotFoundError
         // @see https://github.com/level/levelup#dbgetkey-options-callback
-        if (err.type !== 'NotFoundError') throw err;
+        if (!isNotFoundError(err)) throw err;
     }
 }
 
