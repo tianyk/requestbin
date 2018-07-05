@@ -3,7 +3,9 @@ const ms = require('ms');
 const express = require('express');
 const router = express.Router();
 const BinService = require('../service/bins');
-router.use('/api', require('./api'));
+
+const apiV1Router = require('./v1');
+router.use('/api/v1', apiV1Router);
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
